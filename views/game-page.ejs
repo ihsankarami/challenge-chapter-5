@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Suit Game</title>
+  </head>
+  <body>
+    <section>
+      <div class="game-parent-container">
+        <div style="padding: 40px; display: flex; gap: 20px">
+          <a href="./index">
+            <ion-icon size="large" name="chevron-back-outline"></ion-icon>
+          </a>
+          <img style="width: 40px; height: 35px;" src="/assets/logo -suit.png"/>
+          <h2 style="font-size: 30px; color: gold">rock paper scissors</h2>
+        </div>
+        <div class="game-container">
+          <div class="player-container image-container">
+            <h2 class="player-com">player 1</h2>
+            <div class="player-batu player " >
+              <img class="suit-img" src="/assets/batu.png" alt="gambar batu">
+            </div>
+            <div  class="player-kertas player  ">
+              <img class="suit-img" src="/assets/kertas.png" alt="gambar kertas">
+            </div>
+            <div class="player-gunting player ">
+              <img class="suit-img" src="/assets/gunting.png" alt="gambar gunting">
+            </div>
+          </div>
+          <div class="info">
+            <div>
+            <p class="vs">VS</p>
+            </div>
+             <img class="restart-btn " src="/assets/refresh.png" alt="refresh button">
+          </div>
+          <div class="cpu-container image-container">
+            <h2 class="player-com">COM</h2>
+            <div class="cpu-batu cpu ">
+              <img class="suit-img" src="/assets/batu.png" alt="gambar batu">
+            </div>
+            <div  class="cpu-kertas cpu ">
+              <img class="suit-img" src="/assets/kertas.png" alt="gambar kertas">
+            </div >
+            <div class="cpu-gunting cpu ">
+              <img class="suit-img" src="/assets/gunting.png" alt="gambar gunting">
+            </div>
+          </div>
+         
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+
+  <script type="text/javascript" src="script.js"></script>
+  <script
+    type="module"
+    src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+  ></script>
+  <script
+    nomodule
+    src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+  ></script>
+</html>
