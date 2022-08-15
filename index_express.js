@@ -4,7 +4,7 @@ import bodyParser from 'body-parser';
 
 //config
 const app = Express();
-
+const port = process.env.PORT || 4001;
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.set('view engine', 'ejs');
@@ -50,4 +50,4 @@ app.get('/game-page', (req, res) => {
   res.render('game-page');
 });
 
-app.listen(4001);
+app.listen(port);
