@@ -1,0 +1,26 @@
+{
+  "development": {
+    "username": "ihsan",
+    "password": "ihsan",
+    "database": "database_development",
+
+    "host": "localhost",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "ihsan",
+    "password": "ihsan",
+    "database": "database_test",
+
+    "host": "localhost",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "ihsan",
+    "password": "ihsan",
+
+    "database": "database_production",
+    "host": "localhost",
+    "dialect": "postgres"
+  }
+}
