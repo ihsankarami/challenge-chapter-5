@@ -1,5 +1,8 @@
 'use strict';
 const { Model } = require('sequelize');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
 module.exports = (sequelize, DataTypes) => {
   class userGame extends Model {
     /**

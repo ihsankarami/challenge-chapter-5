@@ -1,17 +1,32 @@
 const Express = require('express');
-
+const session = require('express-session');
+const flash = require('express-flash');
 const fs = require('fs');
 const { Op } = require('sequelize');
 const models = require('./models');
+const verifySignUpController = require('./controllers/verifyRegisterUserGame');
+const verifySignIn = require('./controllers/verifySignUserGame');
 
-//config
+const authAdmin = require('./controllers/LocalauthController');
 const app = Express();
 
+const restrict = require('./middleware/restrict');
+
+app.use(Express.urlencoded({ extended: false }));
+
 app.use(
-  Express.urlencoded({
-    extended: false,
+  session({
+    secret: 'secret',
+    resave: false,
+    saveUninitialized: false,
   })
 );
+const passport = require('./lib/passport');
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use(flash());
 
 app.set('view engine', 'ejs');
 // app.use(Express.json());
@@ -19,40 +34,32 @@ app.set('view engine', 'ejs');
 //render static file
 app.use(Express.static('public'));
 
-app.get('/', (req, res) => {
+// read data from userData.json
+// let data = fs.readFileSync('userData.json');
+// let userData = JSON.parse(data);
+
+//register
+app.get('/register-admin', (req, res) => res.render('register'));
+app.post('/register-admin', authAdmin.register);
+
+app.get('/register-user', (req, res) => res.render('registerUser'));
+app.post(
+  '/register-user',
+
+  verifySignUpController.signup
+);
+
+//login
+app.get('/login-user', (req, res) => {
+  res.render('loginUser');
+});
+app.get('/login-admin', (req, res) => {
   res.render('login');
 });
+app.post('/login', authAdmin.login);
+app.post('/login-user', verifySignIn.login);
 
-// read data from userData.json
-let data = fs.readFileSync('userData.json');
-let userData = JSON.parse(data);
-console.log(userData);
-
-// login user
-app.post('/user', (req, res) => {
-  if (
-    req.body.username == userData.username &&
-    req.body.password == userData.password
-  ) {
-    console.log('login correct');
-    res.redirect('/index');
-  }
-  if (req.body.username == 'admin' && req.body.password == 'admin') {
-    console.log('login as admin');
-    res.redirect('/dashboard');
-  } else if (
-    req.body.username == userData.username &&
-    req.body.password != userData.password
-  ) {
-    console.log('invalid password');
-    res.end('invalid password');
-  } else if (req.body.username != userData.username) {
-    console.log('invalid username');
-    res.end('invalid password');
-  }
-});
-
-app.get('/dashboard', async (req, res) => {
+app.get('/dashboard', restrict, async (req, res) => {
   const searchName = req.query.searchName;
   let userGames;
 
