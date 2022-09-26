@@ -18,15 +18,21 @@
           <h2 style="font-size: 30px; color: gold">rock paper scissors</h2>
         </div>
         <div class="game-container">
+          <div class="select-container">
+        <input id="txtRoomCode" type="text" name="roomCode"/>
+        <button id="submitRoomCode" class="h2">Join Room</button>
+      </div>  
           <div class="player-container image-container">
-            <h2 class="player-com">player 1</h2>
-            <div class="player-batu player " >
+            <h2 class="status"></h2>
+
+            <h2 class="playerOne">player 1</h2>
+            <div class="playerOne-batu player " >
               <img class="suit-img" src="/assets/batu.png" alt="gambar batu">
             </div>
-            <div  class="player-kertas player  ">
+            <div  class="playerOne-gunting player  ">
               <img class="suit-img" src="/assets/kertas.png" alt="gambar kertas">
             </div>
-            <div class="player-gunting player ">
+            <div class="playerOne-gunting player ">
               <img class="suit-img" src="/assets/gunting.png" alt="gambar gunting">
             </div>
           </div>
@@ -37,14 +43,14 @@
              <img class="restart-btn " src="/assets/refresh.png" alt="refresh button">
           </div>
           <div class="cpu-container image-container">
-            <h2 class="player-com">COM</h2>
-            <div class="cpu-batu cpu ">
+            <h2 class="playerTwo'">Player 2</h2>
+            <div class="playerTwo-batu cpu ">
               <img class="suit-img" src="/assets/batu.png" alt="gambar batu">
             </div>
-            <div  class="cpu-kertas cpu ">
+            <div  class="playerTwo-kertas cpu ">
               <img class="suit-img" src="/assets/kertas.png" alt="gambar kertas">
             </div >
-            <div class="cpu-gunting cpu ">
+            <div class="playerTwo-gunting cpu ">
               <img class="suit-img" src="/assets/gunting.png" alt="gambar gunting">
             </div>
           </div>

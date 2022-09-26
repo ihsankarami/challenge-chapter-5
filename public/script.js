@@ -1,16 +1,19 @@
-// player variables
-const player = document.querySelectorAll('.player');
-const batuPlyr = document.querySelector('.player-batu');
-const guntingPlyr = document.querySelector('.player-gunting');
-const kertasPlyr = document.querySelector('.player-kertas');
-let playerChoice = '';
+const txtRoomCode = document.getElementById('txtRoomCode');
+const btnSubmitRoomCode = document.getElementById('submitRoomCode');
+const statusText = document.querySelector('.status');
+// player1 variables
+const playerOne = document.querySelectorAll('.playerOne');
+const batuPlyr = document.querySelector('.playerOne-batu');
+const guntingPlyr = document.querySelector('.playerOne-gunting');
+const kertasPlyr = document.querySelector('.playerOne-kertas');
+const playerOneOptions = [rockBtn, paperBtn, scissorsBtn];
 
-// cpu variables
-const cpu = document.querySelector('.cpu');
-const batuCpu = document.querySelector('.cpu-batu');
-const guntingCpu = document.querySelector('.cpu-gunting');
-const kertasCpu = document.querySelector('.cpu-kertas');
-let cpuChoice = '';
+// player2 variables
+const playerTwo = document.querySelector('.playerTwo');
+const batuCpu = document.querySelector('.playerTwo-batu');
+const guntingCpu = document.querySelector('.playerTwo-gunting');
+const kertasCpu = document.querySelector('.playerTwo-kertas');
+const playerTwoOptions = [rockBtnTwo, paperBtnTwo, scissorsBtnTwo];
 
 const rstBtn = document.querySelector('.restart-btn');
 const resultText = document.querySelector('.vs');
@@ -18,106 +21,119 @@ const resultText = document.querySelector('.vs');
 //  start game
 /////////////////
 
+// get user id from url query string
+const urlParams = new URLSearchParams(window.location.search);
+const userId = urlParams.get('userId');
+
+//starting condition
 let gameStart = true;
+let mode = '';
+playerOne.style.display = 'none';
+playerTwo.style.display = 'none';
 
-// player choose batu
-batuPlyr.addEventListener('click', function (e) {
-  if (gameStart) {
-    batuPlyr.classList.add('game-active');
-    playerChoice = 'batu';
-    cpuSelect();
-    result();
-  }
-  gameStart = false;
-});
-// player choose kertas
-kertasPlyr.addEventListener('click', function () {
-  if (gameStart) {
-    kertasPlyr.classList.add('game-active');
-    playerChoice = 'kertas';
-    cpuSelect();
-    result();
-  }
-  gameStart = false;
-});
-// player choose gunting
-guntingPlyr.addEventListener('click', function () {
-  if (gameStart) {
-    guntingPlyr.classList.add('game-active');
-    playerChoice = 'gunting';
-    cpuSelect();
-    result();
-  }
-  gameStart = false;
-});
+// untuk melakukan pengecekan status secara realtime
+function checkStatusPeriodicaly() {
+  const roomCode = txtRoomCode.value;
+  const interval = setInterval(async () => {
+    const response = await axios.get('/game-page/status/' + roomCode);
 
-// cpu choice
-const cpuSelect = () => {
-  c = Math.floor(Math.random() * 3);
-  if (c === 0) {
-    cpuChoice = 'batu';
-    batuCpu.classList.add('game-active');
-  }
-  if (c === 1) {
-    cpuChoice = 'kertas';
-    kertasCpu.classList.add('game-active');
-  }
-  if (c === 2) {
-    cpuChoice = 'gunting';
-    guntingCpu.classList.add('game-active');
-  }
+    if (response.data.status == true) {
+      clearInterval(interval);
+
+      resultText.innerText =
+        'player 1 Picks ' + response.data.data.playerOnePick;
+      resultText.innerText =
+        'player 2 Picks ' + response.data.data.playerTwoPick;
+      if (response.data.data.winnerUserId == userId) {
+        document.querySelector('.vs').innerText = 'player 1 win';
+        resultText.classList.add('win');
+      } else if (response.data.data.winnerUserId == null) {
+        document.querySelector('.vs').innerText = 'draw';
+        resultText.classList.add('tie');
+      } else {
+        document.querySelector('.vs').innerText = 'player 2 win';
+        resultText.classList.add('lose');
+      }
+    }
+  }, 2000);
+}
+
+// Disable button
+const btnDisableMaster = () => {
+  playerOneOptions.forEach((option) => {
+    option.disabled = true;
+  });
+};
+const btnDisableGuest = () => {
+  playerTwoOptions.forEach((option) => {
+    option.disabled = true;
+  });
+};
+// Enable button
+const btnEnable = () => {
+  playerOneOptions.forEach((option) => {
+    option.disabled = false;
+  });
 };
 
-// game result fucntion
+btnSubmitRoomCode.addEventListener('click', function onClick() {
+  txtRoomCode.innerText = txtRoomCode.value;
+  const roomCode = txtRoomCode.value;
 
-const result = () => {
-  //batu
-  if ((playerChoice === 'batu') & (cpuChoice === 'gunting')) {
-    document.querySelector('.vs').innerText = 'player 1 win';
-    resultText.classList.add('win');
-  }
-  if ((playerChoice === 'batu') & (cpuChoice === 'kertas')) {
-    document.querySelector('.vs').innerText = 'com win';
-    resultText.classList.add('lose');
-  }
+  axios
+    .post('/suit-game/join', {
+      userId: userId,
+      roomCode: roomCode,
+    })
+    .then((res) => {
+      alert(res.data.message);
+      statusText.innerText = 'Choose one';
 
-  //gunting
-  if ((playerChoice === 'gunting') & (cpuChoice === 'kertas')) {
-    document.querySelector('.vs').innerText = 'player 1 win';
-    resultText.classList.add('win');
-  }
-  if ((playerChoice === 'gunting') & (cpuChoice === 'batu')) {
-    document.querySelector('.vs').innerText = 'com win';
-    resultText.classList.add('lose');
-  }
+      if (res.data.mode == 'master') {
+        playerOne.style.display = 'flex';
+        playerTwo.style.display = 'none';
+      }
+      if (res.data.mode == 'guest') {
+        playerOne.style.display = 'flex';
+        playerTwo.style.display = 'none';
+      }
+    });
+  playerOneOptions.forEach((option) => {
+    option.addEventListener('click', function onClick() {
+      btnDisableMaster();
+      const pick = option.value;
 
-  //kertas
-  if ((playerChoice === 'kertas') & (cpuChoice === 'gunting')) {
-    document.querySelector('.vs').innerText = 'com win';
-    resultText.classList.add('lose');
-  }
-  if ((playerChoice === 'kertas') & (cpuChoice === 'batu')) {
-    document.querySelector('.vs').innerText = 'player 1 win';
-    resultText.classList.add('win');
-  }
-
-  //tie
-  if (playerChoice === cpuChoice) {
-    document.querySelector('.vs').innerText = 'draw';
-    resultText.classList.add('tie');
-  }
-};
-
-// restart game fucntion
-
-rstBtn.addEventListener('click', function () {
-  kertasPlyr.classList.remove('game-active');
-  batuPlyr.classList.remove('game-active');
-  guntingPlyr.classList.remove('game-active');
-  kertasCpu.classList.remove('game-active');
-  batuCpu.classList.remove('game-active');
-  guntingCpu.classList.remove('game-active');
-  document.querySelector('.vs').innerText = 'vs';
-  resultText.classList.remove('win', 'tie', 'lose');
-  gameStart = true;
+      document.querySelector('.' + option.className).style.backgroundColor =
+        '#C4C4C4';
+      submitPick(pick);
+    });
+  });
+  playerTwoOptions.forEach((option) => {
+    option.addEventListener('click', function onClick() {
+      btnDisableGuest();
+      console.log('pilihan', option.value);
+      const pick = option.value;
+      document.querySelector('.' + option.className).style.backgroundColor =
+        '#C4C4C4';
+      submitPick(pick);
+    });
+  });
 });
+
+async function submitPick(pick) {
+  txtRoomCode.innerText = txtRoomCode.value;
+  const roomCode = txtRoomCode.value;
+  const response = await axios.post('/game-page/submit', {
+    roomCode: roomCode,
+    userId: userId,
+    pick: pick,
+  });
+  const data = response.data;
+  console.log('ini respon dari submit pick', data);
+  if (
+    (data.status == 'pending' && data.success == true) ||
+    (data.status == 'settled' && data.success == true)
+  ) {
+    checkStatusPeriodicaly();
+  }
+}
