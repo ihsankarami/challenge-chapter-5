@@ -4,9 +4,10 @@ const flash = require('express-flash');
 const models = require('./models');
 const app = Express();
 const router = require('./router');
+const cookieParser = require('cookie-parser');
 
 app.use(Express.urlencoded({ extended: false }));
-
+app.use(cookieParser());
 app.use(
   session({
     secret: 'secret',
@@ -25,7 +26,8 @@ app.set('view engine', 'ejs');
 // app.use(Express.json());
 
 //render static file
-app.use(Express.static('public'));
+app.use(Express.static(__dirname + '/public'));
+
 app.use(router);
 
 models.sequelize

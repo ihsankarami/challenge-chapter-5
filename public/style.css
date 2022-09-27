@@ -124,26 +124,32 @@ p {
 }
 
 .game-container {
-  margin-top: 100px;
+  margin-top: 80px;
   display: flex;
   justify-content: space-around;
 }
 
 .select-container {
-  position: relative;
-  width: 300px;
+  height: 40px;
+  width: 200px;
   display: flex;
-  gap: 26px;
+  margin-left: 100px;
   align-items: center;
   flex-direction: column;
   align-content: center;
-  justify-content: space-evenly;
+  justify-content: center;
 }
 .player-com {
   text-align: center;
   font-size: 25px;
 }
-.image-container {
+.playerone-container {
+  gap: 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+.playertwo-container {
   gap: 40px;
   display: flex;
   flex-direction: column;

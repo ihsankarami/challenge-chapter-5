@@ -2,17 +2,17 @@ const txtRoomCode = document.getElementById('txtRoomCode');
 const btnSubmitRoomCode = document.getElementById('submitRoomCode');
 const statusText = document.querySelector('.status');
 // player1 variables
-const playerOne = document.querySelectorAll('.playerOne');
-const batuPlyr = document.querySelector('.playerOne-batu');
-const guntingPlyr = document.querySelector('.playerOne-gunting');
-const kertasPlyr = document.querySelector('.playerOne-kertas');
+const playerOne = document.querySelector('.player-container');
+const rockBtn = document.querySelector('.playerOne-batu');
+const scissorsBtn = document.querySelector('.playerOne-gunting');
+const paperBtn = document.querySelector('.playerOne-kertas');
 const playerOneOptions = [rockBtn, paperBtn, scissorsBtn];
 
 // player2 variables
-const playerTwo = document.querySelector('.playerTwo');
-const batuCpu = document.querySelector('.playerTwo-batu');
-const guntingCpu = document.querySelector('.playerTwo-gunting');
-const kertasCpu = document.querySelector('.playerTwo-kertas');
+const playerTwo = document.querySelector('.playertwo-container');
+const rockBtnTwo = document.querySelector('.playerTwo-batu');
+const scissorsBtnTwo = document.querySelector('.playerTwo-gunting');
+const paperBtnTwo = document.querySelector('.playerTwo-kertas');
 const playerTwoOptions = [rockBtnTwo, paperBtnTwo, scissorsBtnTwo];
 
 const rstBtn = document.querySelector('.restart-btn');
@@ -40,19 +40,19 @@ function checkStatusPeriodicaly() {
     if (response.data.status == true) {
       clearInterval(interval);
 
-      resultText.innerText =
+      statusText.innerText =
         'player 1 Picks ' + response.data.data.playerOnePick;
-      resultText.innerText =
+      statusText.innerText =
         'player 2 Picks ' + response.data.data.playerTwoPick;
       if (response.data.data.winnerUserId == userId) {
         document.querySelector('.vs').innerText = 'player 1 win';
-        resultText.classList.add('win');
+        statusText.classList.add('win');
       } else if (response.data.data.winnerUserId == null) {
         document.querySelector('.vs').innerText = 'draw';
-        resultText.classList.add('tie');
+        statusText.classList.add('tie');
       } else {
         document.querySelector('.vs').innerText = 'player 2 win';
-        resultText.classList.add('lose');
+        statusText.classList.add('lose');
       }
     }
   }, 2000);
@@ -111,7 +111,6 @@ btnSubmitRoomCode.addEventListener('click', function onClick() {
   playerTwoOptions.forEach((option) => {
     option.addEventListener('click', function onClick() {
       btnDisableGuest();
-      console.log('pilihan', option.value);
       const pick = option.value;
       document.querySelector('.' + option.className).style.backgroundColor =
         '#C4C4C4';

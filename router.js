@@ -8,9 +8,9 @@ const restrict = require('./middleware/restrict');
 const joinCtrl = require('./controllers/game/join');
 const submitCtrl = require('./controllers/game/submit');
 const statusCtrl = require('./controllers/game/status');
-
 const authUser = require('./middleware/jwtAuth');
-const dashboardController = require('./controllers/adminDashboarController');
+
+const dashboardController = require('./controllers/adminDashboardController');
 
 //register as admin using local strategy
 router.get('/register-admin', (req, res) => res.render('register'));
@@ -37,14 +37,15 @@ router.get('/index', authUser, (req, res) => {
 });
 
 //game suit endpoint
-router.get('/game-page', authUser, (req, res) => {
+router.get(`/game-page`, authUser, (req, res) => {
   res.render('game-page');
 });
-router.post('/game-page/join', joinCtrl.join);
 
-router.post('/game-page/submit', submitCtrl.submit);
+router.post('/game-page/join', joinCtrl);
 
-router.get('/game-page/status/:roomCode', statusCtrl.status);
+router.post('/game-page/submit', submitCtrl);
+
+router.get('/game-page/status/:roomCode', statusCtrl);
 
 // router for dashboard
 ////////////////////////
